@@ -1,0 +1,19 @@
+#!/bin/bash
+
+timeout=35
+
+check() {
+  echo checking $1;
+  if easycrypt -I . -timeout $timeout $1 2>/dev/null;
+  then echo passed: $1;
+       echo "";
+  else echo failed: $1;
+       echo "";
+       echo "skipping remaining scripts";
+  exit 1;
+  fi;
+}
+
+# list of files to check
+check CNM_unsat.ec
+echo "DONE";
