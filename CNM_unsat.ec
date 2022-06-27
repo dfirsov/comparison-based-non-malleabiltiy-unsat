@@ -15,16 +15,13 @@ op Commit (pk : pubkey) (m : message) : (commitment * openingkey) distr.
 op Verify : pubkey -> message * (commitment * openingkey) -> bool.
 
 
-op mdistr : message distr.
-
 abbrev (\notin) ['a] (z : 'a) (s : 'a list) : bool = !mem s z.
 
 axiom S_correct pk m c d: pk \in Gen => (c,d) \in Commit pk m => Verify pk (m, (c, d)).
 axiom S_inj pk m1 m2 c d: pk \in Gen => m1 <> m2 => (c,d) \in Commit pk m2 => !Verify pk (m1, (c, d)).
-
 axiom Com_ll pk m : is_lossless (Commit pk m).
 axiom Gen_ll : is_lossless Gen.
-axiom mdistr_ll : is_lossless mdistr.
+
 
 module type AdvNNMO = {
   proc init(pk : pubkey) : message distr
@@ -567,7 +564,7 @@ progress.
 qed.
 
 
-(* the advantage of adversary is 1/4 - 1/4 * negligible pubkey *)
+(* the advantage of adversary is 1/4 - 1/4 * negligible *)
 lemma cnm_unsat &m:
   1%r/4%r - 
   1%r/4%r * Pr[ Q.main(m1,tt) @ &m : res ] =
