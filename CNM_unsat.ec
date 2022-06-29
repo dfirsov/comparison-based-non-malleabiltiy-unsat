@@ -9,7 +9,7 @@ type pubkey,  message,  commitment, openingkey.
 type relation = message -> message list -> bool.
 
 
-(* the commitment scheme is a triple of algorithms (Gen,Com,Ver) *)
+(* the commitment scheme is a triple of algorithms (Gen,Commit,Verify) *)
 op Gen : pubkey distr.
 op Commit (pk : pubkey) (m : message) : (commitment * openingkey) distr.
 op Verify : pubkey -> message * (commitment * openingkey) -> bool.
@@ -17,8 +17,11 @@ op Verify : pubkey -> message * (commitment * openingkey) -> bool.
 
 abbrev (\notin) ['a] (z : 'a) (s : 'a list) : bool = !mem s z.
 
+(* the commitment scheme is functional *)
 axiom S_correct pk m c d: pk \in Gen => (c,d) \in Commit pk m => Verify pk (m, (c, d)).
 axiom S_inj pk m1 m2 c d: pk \in Gen => m1 <> m2 => (c,d) \in Commit pk m2 => !Verify pk (m1, (c, d)).
+
+(* the commitment sampling and key generation are efficient *)
 axiom Com_ll pk m : is_lossless (Commit pk m).
 axiom Gen_ll : is_lossless Gen.
 
@@ -140,6 +143,7 @@ wp. rnd. wp. rnd. wp. rnd. skip. progress. progress.
 qed.    
 
 
+(* the winning probability in terms of an event complement to the c <> c' condition *)
 local lemma g0a &m : Pr[ NNMO_G0(A).main() @ &m : res ] = 1%r/2%r -  
   Pr[ NNMO_G0(A).main() @ &m : NNMO_G0.m = m1 /\ NNMO_G0.c = A.c'].
 proof.
@@ -224,7 +228,7 @@ progress. progress.
 qed. 
 
 
-
+(* the winning probability in terms of an event complement to the c <> c' condition *)
 local lemma g1a &m:
   Pr[ NNMO_G1(A).main() @ &m : res ] = 1%r/4%r
     -  Pr[ NNMO_G1(A).main() @ &m : NNMO_G1.m = m1 /\  NNMO_G1.n = m1 /\ NNMO_G1.c = A.c'].
@@ -480,6 +484,7 @@ apply invr0.
 qed.
 
 
+(* the probability of c = c' can be assumed to be negligible for any realistic commitment scheme with sufficient randomness *)
 module Q = {
 
   var c, c' : commitment
