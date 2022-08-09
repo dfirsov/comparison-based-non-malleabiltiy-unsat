@@ -12,5 +12,4 @@ This repository contains the EasyCrypt code associated with the paper "D. Firsov
 * For this project we used the developement version of EasyCrypt (1.0) theorem prover with GIT hash: r2022.04-23-gb44893a5
 * EasyCrypt was configured with support from the following SMT solvers: Why3@1.5.0, Z3@4.8.7, CVC4@1.6, Alt-Ergo@2.4.1
 * to check the development run:
-    `$> cd DEVELOPMENT_FOLDER`
-    `$> bash checkall`
+    `$> cd DEVELOPMENT_FOLDER && bash checkall`
